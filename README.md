@@ -4,11 +4,11 @@ Welcome to my central research hub. This repository contains my major projects a
 
 ## 🚀 Key Projects
 
-#### 🛡️ [Autonomous AI Cyber-Defense Framework](https://github.com/Nezheg0l/my-projects/tree/main/autonomous-cyber-defense)
+### 🛡️ Autonomous AI Cyber-Defense Framework
 A self-healing infrastructure experiment where Red and Blue AI agents automate the vulnerability lifecycle.
 - **V1 (Legacy):** Initial proof of concept.
 - **V2 (Current):** Advanced orchestrator with CI/CD, automatic patching, and rollback logic.
-
+- [**Framework**](https://github.com/Nezheg0l/my-projects/tree/main/autonomous-cyber-defense)
 ---
 
 ## 🔬 Research Focus
