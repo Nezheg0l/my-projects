@@ -23,7 +23,7 @@ Demonstrated the ability to rewrite vulnerable code into secure, parameterized s
 
 ### Phase 2: Generative Active Defense (v2)
 Captured logs showing the Honeypot intercepting `ls` and `cat` commands, followed by a triggered Rickroll redirect.
-![Honeypot Logs](./assets/honeypot_v2.jpg)
+![Honeypot Logs](https://github.com/Nezheg0l/my-projects/blob/main/AI%20protection%20against%20script%20kiderop/assets/Untitled.jpg)
 
 ## 🏆 Engineering Highlights
 - **Zero-Latency Deception:** AI-generated terminal responses provide an immersive trap for automated scripts.
