@@ -9,7 +9,7 @@ This project evolved from a simple concept of AI-driven code patching to a fully
 - **Features:** Streamlit-based UI, manual vulnerability input, AI-driven code rewriting.
 - **Outcome:** Successfully proved that LLMs can replace unsafe functions (like `os.popen`) with secure alternatives (like `subprocess.run`).
 
-![Version 1 Demo](./assets/demo_v1.jpg) 
+![Version 1 Demo](https://github.com/Nezheg0l/my-projects/blob/main/autonomous-cyber-defense/assets/5341460280271113909.jpg)
 *(Above: Screenshot of the v1 dashboard showing the AI-generated patch(sorry bad photo))*
 
 ### Phase 2: Autonomous Framework (v2)
