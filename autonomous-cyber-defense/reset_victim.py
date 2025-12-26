@@ -1,6 +1,6 @@
 import os
 
-# ЦЕ ВРАЗЛИВИЙ КОД (БЕЗ WAF - Щоб точно зламали)
+
 VULNERABLE_CODE = """from flask import Flask, request, redirect, render_template_string
 import sqlite3
 import os
@@ -34,14 +34,12 @@ ADMIN_HTML = \"\"\"
 def home():
     return LOGIN_HTML
 
-# 🚨 ВРАЗЛИВІСТЬ: SQLi
+
 @app.route('/login_check')
 def login_check():
     username = request.args.get('username')
     password = request.args.get('password')
     
-    # WAF ВИМКНЕНО ДЛЯ ДЕМОНСТРАЦІЇ
-    # if waf_check(username): return "🚫 WAF BLOCKED!", 403
 
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -70,23 +68,17 @@ def admin():
     tickets_html = "<ul>" + "".join([f"<li>{row[0]}</li>" for row in rows]) + "</ul>"
     return render_template_string(ADMIN_HTML.format(tickets=tickets_html))
 
-# 🚨 ВРАЗЛИВІСТЬ: RCE
 @app.route('/admin/ping')
 def ping():
     ip = request.args.get('ip')
     if not ip: return "No IP"
     
-    # WAF ВИМКНЕНО
-    # if waf_check(ip): return "🚫 WAF BLOCKED!", 403
-    
-    # BAD CODE
     cmd = f"ping -c 1 {ip}"
     try:
         return os.popen(cmd).read()
     except Exception as e:
         return str(e)
 
-# Додавання тікета
 @app.route('/submit_ticket', methods=['POST'])
 def submit_ticket():
     content = request.form.get('content')
