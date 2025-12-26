@@ -2,7 +2,6 @@ import requests
 import json
 
 def generate_fake_output(command):
-    # Це мозок нашої пастки. Він придумує вивід консолі.
     
     prompt = f"""
     You are a high-interaction Honeypot simulating an Ubuntu Linux server.
@@ -21,20 +20,18 @@ def generate_fake_output(command):
 
     url = "http://localhost:11434/api/generate"
     data = {
-        "model": "qwen2.5-coder:7b", # Твій розумний захисник
+        "model": "qwen2.5-coder:7b", 
         "prompt": prompt,
         "stream": False,
-        "options": {"temperature": 0.4} # Трохи креативності, але щоб було схоже на правду
+        "options": {"temperature": 0.4} 
     }
 
     try:
         response = requests.post(url, json=data)
         result = response.json()['response'].strip()
-        # Чистимо від маркдауну, якщо він є
         return result.replace("```bash", "").replace("```", "")
     except Exception as e:
         return f"Error simulating output: {e}"
 
-# Тест
 if __name__ == "__main__":
     print(generate_fake_output("ls -la /var/www/html"))
