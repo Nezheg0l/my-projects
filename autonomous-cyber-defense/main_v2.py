@@ -6,7 +6,6 @@ import shutil
 from agents.attacker_v2 import RedTeamAgent
 from agents.defender import patch_vulnerability
 
-# Налаштування
 VICTIM_DIR = "victim"
 VICTIM_FILE = os.path.join(VICTIM_DIR, "app.py")
 BACKUP_FILE = os.path.join(VICTIM_DIR, "app.py.bak")
@@ -56,43 +55,33 @@ def run_evolution_cycle():
         print(f"🎯 TARGET: {attack_type}")
         print("="*40)
         
-        # 1. АТАКА
         payload = bot.attack(attack_type, max_retries=3)
         
         if payload:
             print(f"🚨 BREACH DETECTED! Initiating Patching Protocol...")
             
-            # Робимо бекап перед змінами
             shutil.copy(VICTIM_FILE, BACKUP_FILE)
             
-            # Читаємо код
             with open(VICTIM_FILE, "r") as f:
                 code = f.read()
             
-            # 2. ЗАХИСТ (Генерація патчу)
             fixed_code = patch_vulnerability(code, payload, attack_type)
             
-            # 3. ВАЛІДАЦІЯ (Quality Gate 1: Syntax)
             if fixed_code and is_valid_python(fixed_code):
-                # Зберігаємо патч
                 with open(VICTIM_FILE, "w") as f:
                     f.write(fixed_code)
                 print(f"💾 PATCH APPLIED. Validating functionality...")
                 
-                # 4. ДЕПЛОЙ
                 if restart_docker():
                     
-                    # 5. ТЕСТУВАННЯ (Quality Gate 2: Business Logic)
                     if run_functionality_tests():
                         print("✅ TESTS PASSED. Functionality intact.")
                         
-                        # 6. ВЕРИФІКАЦІЯ БЕЗПЕКИ
                         print(f"🕵️ SECURITY VERIFICATION: Retrying attack...")
                         retry = bot.attack(attack_type, max_retries=1)
                         
                         if not retry:
                             print(f"🏆 SUCCESS: {attack_type} is SECURE and FUNCTIONAL!")
-                            # Видаляємо бекап, все ок
                             os.remove(BACKUP_FILE)
                         else:
                             print(f"❌ FAIL: Patch applied but vulnerability remains.")
@@ -114,6 +103,5 @@ def run_evolution_cycle():
             print(f"🎉 SECURE: System resisted {attack_type} attempts.")
 
 if __name__ == "__main__":
-    # Початковий запуск
     restart_docker()
     run_evolution_cycle()
