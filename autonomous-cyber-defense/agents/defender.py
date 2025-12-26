@@ -5,7 +5,6 @@ import re
 def patch_vulnerability(source_code, attack_payload, vuln_type):
     print(f"🛡️ DEFENDER (Local AI): Fixing {vuln_type} vulnerability...")
 
-    # Різні інструкції для різних типів атак
     if vuln_type == "RCE":
         instructions = "Replace 'os.system'/'os.popen' with 'subprocess.run(shell=False)'. Do not use shell=True."
     elif vuln_type == "SQLi":
@@ -29,10 +28,9 @@ def patch_vulnerability(source_code, attack_payload, vuln_type):
     3. Return ONLY the complete fixed code. No Markdown, no comments like 'Here is the code'.
     """
 
-    # Використовуємо Qwen (він кращий кодер) або Dolphin
     url = "http://localhost:11434/api/generate"
     data = {
-        "model": "qwen2.5-coder:7b", # Переконайся, що ця модель у тебе є, або зміни на dolphin-llama3
+        "model": "qwen2.5-coder:7b", 
         "prompt": prompt,
         "stream": False,
         "options": {"temperature": 0.2}
@@ -41,7 +39,6 @@ def patch_vulnerability(source_code, attack_payload, vuln_type):
     try:
         response = requests.post(url, json=data)
         ai_text = response.json()['response']
-        # Чистимо код
         fixed_code = ai_text.replace("```python", "").replace("```", "").strip()
         print("🛡️ DEFENDER: Patch generated.")
         return fixed_code
