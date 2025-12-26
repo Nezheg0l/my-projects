@@ -8,7 +8,6 @@ st.set_page_config(page_title="AI Cyber Warfare", layout="wide", page_icon="🛡
 st.title("🛡️ Autonomous AI Cyber Warfare Framework")
 st.markdown("### Red Team (Dolphin-Llama3) vs Blue Team (Qwen2.5-Coder)")
 
-# Метрики
 col1, col2, col3 = st.columns(3)
 col1.metric("Server Status", "Online 🟢")
 col2.metric("AI Model (Attack)", "Dolphin-Llama3")
@@ -16,7 +15,6 @@ col3.metric("AI Model (Defense)", "Qwen2.5-Coder")
 
 st.divider()
 
-# Тут будемо показувати код
 col_attack, col_defense = st.columns(2)
 
 with col_attack:
@@ -34,7 +32,6 @@ def ping():
 with col_defense:
     st.subheader("🛡️ Patched Code (After AI Fix)")
     
-    # Читаємо реальний файл з сервера!
     try:
         with open("victim/app.py", "r") as f:
             current_code = f.read()
